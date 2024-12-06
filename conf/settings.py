@@ -11,7 +11,6 @@ https://docs.djangoproject.com/en/3.2/ref/settings/
 """
 
 from pathlib import Path
-import datetime
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -42,14 +41,14 @@ INSTALLED_APPS = [
     'chat',
     'tasks',
     'rest_framework',
-    'corsheaders',
+
+
 ]
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
-    'django.middleware.common.CommonMiddleware',
-    'corsheaders.middleware.CorsMiddleware',  # Must be placed above CommonMiddleware
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
@@ -121,6 +120,11 @@ USE_L10N = True
 USE_TZ = True
 
 
+
+
+import datetime
+
+
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': [
         'rest_framework_simplejwt.authentication.JWTAuthentication',
@@ -128,16 +132,20 @@ REST_FRAMEWORK = {
 }
 
 SIMPLE_JWT = {
+    # how long the original token is valid for
     'ACCESS_TOKEN_LIFETIME': datetime.timedelta(days=2),
+
+    # allow refreshing of tokens
+    'JWT_ALLOW_REFRESH': True,
+
+    # this is the maximum time AFTER the token was issued that
+    # it can be refreshed.  exprired tokens can't be refreshed.
     'REFRESH_TOKEN_LIFETIME': datetime.timedelta(days=7),
 }
 
 
-# CORS configuration
-CORS_ALLOWED_ORIGINS = [
-    'https://edvantage.com.ng',  # Add the allowed origin
-    'http://localhost:3000'
-]
+
+
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.2/howto/static-files/
@@ -149,3 +157,4 @@ STATIC_URL = '/static/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 AUTH_USER_MODEL = "profiles.CustomUser"
+
